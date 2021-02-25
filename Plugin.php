@@ -2,6 +2,7 @@
 if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 /**
  * ThumbOptimizer 是由即刻学术开发的缩略图优化插件，生成成功会 添加 tothumb 字段，内容为附件 id
+ * <br> 插件限制生成头图尺寸 300x200
  * 
  * @package ThumbOptimizer
  * @author gogobody
