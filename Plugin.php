@@ -29,6 +29,7 @@ class ThumbOptimizer_Plugin implements Typecho_Plugin_Interface
     {
 
         Typecho_Plugin::factory('Widget_Contents_Post_Edit')->finishPublish = array('ThumbOptimizer_Plugin', 'post_update');
+        Typecho_Plugin::factory("Widget_Contents_Post_Edit")->getDefaultFieldItems = array("ThumbOptimizer_Plugin", "UTThemeFields");
 
 
         // test
@@ -228,11 +229,32 @@ class ThumbOptimizer_Plugin implements Typecho_Plugin_Interface
 
     public static function post_update($contents, $class)
     {
-        $post_cid = $class->cid;
-        $full_image_url = self::GetThumbnail($contents['text']);
-        $utils = new TUtils(new Typecho_Request(),new Typecho_Response());
-        $res = $utils->make_thumb($full_image_url,$post_cid);
+        $db = Typecho_Db::get();
+        $use_utoptimizer = $db->fetchObject($db->select('str_value')->from('table.fields')->where('cid = ? and name = ?',$class->cid,'use_utoptimizer'));
 
+        if ($use_utoptimizer->str_value == '1'){
+            $post_cid = $class->cid;
+            $full_image_url = self::GetThumbnail($contents['text']);
+            $utils = new TUtils(new Typecho_Request(),new Typecho_Response());
+            $res = $utils->make_thumb($full_image_url,$post_cid);
+        }
+
+    }
+
+    // 添加自定义字段
+    public static function UTThemeFields($layout)
+    {
+        $use_utoptimizer = new Typecho_Widget_Helper_Form_Element_Radio(
+            'use_utoptimizer',
+            array(
+                '0' => '关闭',
+                '1' => '启用'
+            ),
+            '0',
+            '头图优化',
+            '本篇文章是否开启 optimizer 头图优化，默认关闭'
+        );
+        $layout->addItem($use_utoptimizer);
     }
 
 }
