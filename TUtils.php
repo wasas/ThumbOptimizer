@@ -466,8 +466,12 @@ class TUtils extends Widget_Abstract_Contents
             }
             // 设置 自定义 字段
             self::setField('tothumb','str',$attach_cid,$post_cid);
+            $pos = strpos($this->attachment->url,'/usr/uploads');
+            if ($pos ==false) return [];
+            $afterFix = substr($this->attachment->url,$pos);
+            $url = Typecho_Common::url($afterFix, Helper::options()->siteUrl);
             // 修改 缩略图字段
-            $this->change_thumb_field($post_cid,Typecho_Common::url($this->attachment->url, Helper::options()->siteUrl));
+            $this->change_thumb_field($post_cid,$url);
             return $rarr;
         }
         return [];

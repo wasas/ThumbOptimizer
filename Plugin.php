@@ -2,12 +2,12 @@
 if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 /**
  * ThumbOptimizer 是由即刻学术开发的缩略图优化插件，生成成功会 添加 tothumb 字段，内容为附件 id
- * <br> 插件限制生成头图尺寸 300x200
+ * <br> 插件限制生成头图尺寸 300x200，永久更新地址：https://www.ijkxs.com/185.html
  * 
  * @package ThumbOptimizer
  * @author gogobody
- * @version 1.0.0
- * @link http://www.ijkxs.com
+ * @version 1.0.1
+ * @link https://www.ijkxs.com/185.html
  */
 define('BASE_THUMB_PLUGIN_PATH',Helper::options()->pluginDir('ThumbOptimizer').'/ThumbOptimizer/');
 require_once BASE_THUMB_PLUGIN_PATH . 'vendor/autoload.php';
@@ -237,6 +237,9 @@ class ThumbOptimizer_Plugin implements Typecho_Plugin_Interface
             $full_image_url = self::GetThumbnail($contents['text']);
             $utils = new TUtils(new Typecho_Request(),new Typecho_Response());
             $res = $utils->make_thumb($full_image_url,$post_cid);
+//            if (empty($res)){
+//
+//            }
         }
 
     }
